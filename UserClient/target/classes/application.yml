@@ -1,0 +1,43 @@
+server:
+  port: 8081
+spring:
+  servlet:
+    multipart:
+      enabled: true
+  application:
+    name: account-client
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true # 开启Spring Cloud的重试功能
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka #,http://127.0.0.1:10010/eureka
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    lease-expiration-duration-in-seconds: 90
+    lease-renewal-interval-in-seconds: 30
+
+#配置拉取到的服务是失效时，进行从新拉取而不是立即报错
+
+ribbon:
+  ConnectTimeout: 250 # Ribbon的连接超时时间
+  ReadTimeout: 1000 # Ribbon的数据读取超时时间
+#  OkToRetryOnAllOperations: true # 是否对所有操作都进行重试
+#  MaxAutoRetriesNextServer: 1 # 切换实例的重试次数
+#  MaxAutoRetries: 1 # 对当前实例的重试次数
+    
+hystrix:
+  command:
+    default:
+        execution:
+          isolation:
+            thread:
+              timeoutInMillisecond: 6000 # 设置hystrix全局的超时时间为6000ms  
+              
+              
+feign:
+  hystrix:
+    enabled: true # 开启Feign的熔断功能
